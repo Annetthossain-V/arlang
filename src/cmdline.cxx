@@ -14,10 +14,16 @@ std::vector<std::pair<cmd_opts_t, std::string>>& cmd_args::get_opts() {
 }
 
 cmd_args::cmd_args(const int argc, const char** argv) {
-  for (int i = 0; i < argc; i++) {
+  if (argc < 2) {
+    log_stdout::error("No arguments given!");
+    this->error = true;
+    return;
+  }
+
+  for (int i = 1; i < argc; i++) {
     std::string arg = argv[i];
 
-
   }
+
   return;
 }
