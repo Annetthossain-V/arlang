@@ -1,0 +1,21 @@
+Inline-Asm:
+  fn main(int argc, char** argv) -> i32 {
+    i32 retval = 90;
+    __asm__("mov `retval`, 10");
+    return retval;
+  }
+
+Generics:
+
+Type-Functions:
+  fn i32.add(i32* self, i32 num) -> Result<void> {
+    *self += num;
+    return Ok(void);
+  }
+
+Traits:
+
+Errors:
+
+Operator-Overloading:
+
