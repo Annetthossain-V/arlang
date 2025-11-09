@@ -2,6 +2,7 @@
 #include <utility>
 #include <vector>
 #include <string>
+#include <expected>
 
 enum cmd_opts {
   Help,
@@ -9,29 +10,41 @@ enum cmd_opts {
   O1,
   O2,
   O3,
-  I,
-  L,
-  c,
-  S,
-  Si,
-  Nostd,
-  Noinc,
+  Wl,
+  Nostdlib,
+  Nostdinc,
   SaveTemp,
+  OutObj,
+  OutAsm,
+  OutIr,
   Target,
-  Static,
+  ImportDir,
+  FPie,
+  FPic,
+  March,
+  Mtune,
+  FFastMath,
 };
 typedef cmd_opts cmd_opts_t;
 
 class cmd_args {
 public:
   cmd_args(const int argc, const char** argv);
-  bool contains_opt(cmd_opts_t opt);
-  std::vector<std::string>& get_files();
-  std::vector<std::pair<cmd_opts_t, std::string>>& get_opts();
-  bool is_error();
+  std::expected<std::string, bool> contains_opt(cmd_opts_t opt);
+  std::vector<std::string>& get_files() {
+    return this->files;
+  }
+  std::vector<std::pair<cmd_opts_t, std::string>>& get_opts() {
+    return this->opts;
+  }
+  bool is_error() {
+    return this->error;
+  }
+  std::vector<std::pair<cmd_opts_t, std::string>> get_all_opt(cmd_opts_t opt);
 
 private:
   std::vector<std::pair<cmd_opts_t, std::string>> opts;
   std::vector<std::string> files;
   bool error = false;
 };
+

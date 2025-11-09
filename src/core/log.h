@@ -43,7 +43,7 @@ template <typename... Args>
 void error(std::string_view fmt, Args&&... args) {
   std::ostringstream oss;
   log_impl(oss, fmt, std::forward<Args>(args)...);
-  std::cout << "[\x1b[1;31mERROR\x1b[0m] " << "\x1b[31m" << oss.str() << "\x1b[0m" << std::endl;
+  std::cerr << "[\x1b[1;31mERROR\x1b[0m] " << "\x1b[31m" << oss.str() << "\x1b[0m" << std::endl;
 }
 
 }

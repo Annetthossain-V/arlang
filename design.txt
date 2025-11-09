@@ -19,3 +19,6 @@ Errors:
 
 Operator-Overloading:
 
+module:
+  module my_module;
+  import usr/my_module;
