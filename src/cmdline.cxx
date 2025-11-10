@@ -108,6 +108,13 @@ cmd_args::cmd_args(const int argc, const char** argv) {
     else if (arg == "-m32")
       this->opts.push_back(std::make_pair(cmd_opts::M32, ""));
 
+    else if (arg == "--define") {
+      if (i + 1 >= argc) {
+        MISSING_ARG_MACRO("Missing argument for `--define`");
+      }
+      this->opts.push_back(std::make_pair(cmd_opts::define, argv[++i]));
+    }
+
     else {
       log_stdout::error("Unknown Argument `{}`", arg);
       this->error = true;

@@ -25,6 +25,7 @@ enum cmd_opts {
   Mtune,
   FFastMath,
   M32,
+  define,
 };
 typedef cmd_opts cmd_opts_t;
 

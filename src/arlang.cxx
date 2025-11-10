@@ -29,6 +29,7 @@ static void print_help(const char* pname) {
   std::cout << " -mtune <arg> # tune for specified arch\n";
   std::cout << " -ffast-math # fast math optimization (unsafe)\n";
   std::cout << " -m32 # compile to 32-bit code\n";
+  std::cout << " --define <arg> # adds a compiler definition\n";
 
   return;
 }
