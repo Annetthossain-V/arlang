@@ -24,6 +24,7 @@ enum cmd_opts {
   March,
   Mtune,
   FFastMath,
+  M32,
 };
 typedef cmd_opts cmd_opts_t;
 

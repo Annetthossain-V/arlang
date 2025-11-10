@@ -1,0 +1,9 @@
+module std;
+
+
+fn printf(i8* fmt, ...) -> f32 {}
+
+
+
+
+

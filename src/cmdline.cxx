@@ -105,6 +105,9 @@ cmd_args::cmd_args(const int argc, const char** argv) {
     else if (arg == "-ffast-math")
       this->opts.push_back(std::make_pair(cmd_opts::FFastMath, ""));
 
+    else if (arg == "-m32")
+      this->opts.push_back(std::make_pair(cmd_opts::M32, ""));
+
     else {
       log_stdout::error("Unknown Argument `{}`", arg);
       this->error = true;
