@@ -9,13 +9,19 @@ enum OPCode {
   Float,
   String,
   Sym,
+
+  UnknownOP,
 };
 
 enum SubOPCode {
-  KeyWord_Int,
-  KeyWord_Float,
+  KW_Int,
+  KW_Float,
+  KW_I32,
+  KW_F32,
 
   OP_Equal,
+
+  SubUnknownOp,
 };
 
 

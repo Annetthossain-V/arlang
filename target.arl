@@ -1,0 +1,6 @@
+import std;
+
+fn main(int argc, char** argv) -> cint {
+
+  return 0;
+}

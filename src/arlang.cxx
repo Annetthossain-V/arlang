@@ -2,6 +2,8 @@
 #include <fstream>
 #include "cmdline.hxx"
 #include "core/log.h"
+#include "lexer/lexical_analyzer.hxx"
+#include "lexer/lexical_def.hxx"
 #include "llvm/Support/CommandLine.h"
 
 #define ARLANG_COMPILER_VERSION 1
@@ -64,6 +66,8 @@ int main(const int argc, const char** argv) {
       log_stdout::error("Failed to open `{}`", file_name);
       return 1;
     }
+
+    auto lexer_tokens = lexer::lexical_analyze(file);
 
     file.close();
   }

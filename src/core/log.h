@@ -29,21 +29,21 @@ template <typename... Args>
 void info(std::string_view fmt, Args&&... args) {
   std::ostringstream oss;
   log_impl(oss, fmt, std::forward<Args>(args)...);
-  std::cout << "[\x1b[1;34mINFO\x1b[0m] " << "\x1b[34m" << oss.str() << "\x1b[0m" << std::endl;
+  std::cout << "[\x1b[1;34mINFO\x1b[0m] " << oss.str() << std::endl;
 }
 
 template <typename... Args>
 void warn(std::string_view fmt, Args&&... args) {
   std::ostringstream oss;
   log_impl(oss, fmt, std::forward<Args>(args)...);
-  std::cout << "[\x1b[1;33mWARN\x1b[0m] " << "\x1b[33m" << oss.str() << "\x1b[0m" << std::endl;
+  std::cout << "[\x1b[1;33mWARN\x1b[0m] " << oss.str() << std::endl;
 }
 
 template <typename... Args>
 void error(std::string_view fmt, Args&&... args) {
   std::ostringstream oss;
   log_impl(oss, fmt, std::forward<Args>(args)...);
-  std::cerr << "[\x1b[1;31mERROR\x1b[0m] " << "\x1b[31m" << oss.str() << "\x1b[0m" << std::endl;
+  std::cerr << "[\x1b[1;31mERROR\x1b[0m] " << oss.str() << std::endl;
 }
 
 }
