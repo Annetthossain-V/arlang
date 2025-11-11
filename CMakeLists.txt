@@ -19,6 +19,7 @@ add_executable(arlang ${arlang_src})
 
 target_compile_options(arlang PRIVATE 
   $<$<CONFIG:Release>: -O3 -march=x86-64-v2 -fno-plt -fstack-protector -Wall -Wextra -flto>
+  $<$<CONFIG:Debug>: -O0 -g>
 )
 
 target_link_options(arlang PRIVATE 

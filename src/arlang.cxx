@@ -1,10 +1,10 @@
 #include <iostream>
+#include <fstream>
 #include "cmdline.hxx"
 #include "core/log.h"
 #include "llvm/Support/CommandLine.h"
 
 #define ARLANG_COMPILER_VERSION 1
-#define LLVM_VERSION 19
 
 static void print_help(const char* pname) {
   std::cout << pname << " <Options> <Files>\n";
@@ -56,8 +56,16 @@ int main(const int argc, const char** argv) {
     return 1;
   }
 
-  for (auto& file : files) {
-    log_stdout::info("Compiling `{}`", file);
+  for (auto& file_name : files) {
+    log_stdout::info("Compiling `{}`", file_name);
+    std::ifstream file(file_name, std::ios::in);
+
+    if (!file.is_open()) {
+      log_stdout::error("Failed to open `{}`", file_name);
+      return 1;
+    }
+
+    file.close();
   }
 
   return 0;
