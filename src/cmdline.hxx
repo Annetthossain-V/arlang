@@ -26,6 +26,7 @@ enum cmd_opts {
   FFastMath,
   M32,
   define,
+  OutFile,
 };
 typedef cmd_opts cmd_opts_t;
 

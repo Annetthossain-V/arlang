@@ -22,7 +22,7 @@ target_compile_options(arlang PRIVATE
 )
 
 target_link_options(arlang PRIVATE 
-  $<$<CONFIG:Release>: -O2 -lto>
+  $<$<CONFIG:Release>: -O2 -flto>
 )
 
 llvm_map_components_to_libnames(llvm_libs support core irreader)

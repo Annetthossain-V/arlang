@@ -30,6 +30,7 @@ static void print_help(const char* pname) {
   std::cout << " -ffast-math # fast math optimization (unsafe)\n";
   std::cout << " -m32 # compile to 32-bit code\n";
   std::cout << " --define <arg> # adds a compiler definition\n";
+  std::cout << " -o <arg> # specify output name\n";
 
   return;
 }
