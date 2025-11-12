@@ -12,8 +12,7 @@ struct LexerToken {
   std::string line;
 };
 
-std::vector<LexerToken> lexical_analyze(std::ifstream& file); 
-
+std::vector<LexerToken> lexical_analyze(std::ifstream& file);
+void token_grouper(size_t& i, std::string& token, std::string& token_next);
 
 }
-

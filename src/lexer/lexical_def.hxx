@@ -16,6 +16,8 @@ enum OPCode {
 };
 
 enum SubOPCode {
+  KW_Import,
+  KW_Module,
   KW_Int,
   KW_Float,
   KW_I32,
@@ -23,10 +25,10 @@ enum SubOPCode {
 
   OP_Equal,
 
+  Sym_SemiColon,
+
   OPName,
   SubUnknownOp,
 };
 
 }
-
-

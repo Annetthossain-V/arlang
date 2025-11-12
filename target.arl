@@ -1,6 +1,7 @@
-import std;
+module main;
+import "std";
 
 fn main(int argc, char** argv) -> cint {
-
+  std::io::printf("argc = %d\n", argc);
   return 0;
 }
