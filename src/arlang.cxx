@@ -72,6 +72,7 @@ int main(const int argc, const char** argv) {
       auto lexer_tokens = lexer::lexical_analyze(file);
     } catch (std::runtime_error& e) {
       log_stdout::error("{}", e.what());
+      return 1;
     }
 
     file.close();

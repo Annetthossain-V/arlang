@@ -6,10 +6,11 @@ enum OPCode {
   KW,
   Ident,
   Op,
-  Int,
-  Float,
-  String,
+  ValInt,
+  ValFloat,
+  ValString,
   Sym,
+  Asm,
 
   UnknownOP,
 };
