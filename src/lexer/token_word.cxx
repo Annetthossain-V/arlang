@@ -39,6 +39,7 @@ void lexer::TokenImportF( std::string& token, std::vector<lexer::OPCode>& expect
   }
 }
 
+// TODO: add sub-module support
 void lexer::TokenModuleF( std::string& token, std::vector<lexer::OPCode>& expect, lexer::LexerToken& ltoken ) {
   if (token == "module" && (!expect.empty() || pass != 0))
     throw std::runtime_error(std::format("Unexpected Token '{}'", token));
