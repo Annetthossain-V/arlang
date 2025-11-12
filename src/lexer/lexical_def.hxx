@@ -1,8 +1,9 @@
 #pragma once
 
+namespace lexer {
 
 enum OPCode {
-  KeyWord,
+  KW,
   Ident,
   Op,
   Int,
@@ -21,8 +22,10 @@ enum SubOPCode {
 
   OP_Equal,
 
+  OPName,
   SubUnknownOp,
 };
 
+}
 
 

@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <stdexcept>
 #include "cmdline.hxx"
 #include "core/log.h"
 #include "lexer/lexical_analyzer.hxx"
@@ -67,7 +68,11 @@ int main(const int argc, const char** argv) {
       return 1;
     }
 
-    auto lexer_tokens = lexer::lexical_analyze(file);
+    try {
+      auto lexer_tokens = lexer::lexical_analyze(file);
+    } catch (std::runtime_error& e) {
+      log_stdout::error("{}", e.what());
+    }
 
     file.close();
   }
