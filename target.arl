@@ -1,7 +1,7 @@
-module main::mod;
-import "std";
+module main;
+import std;
 
-fn main(int argc, char** argv) -> cint {
+fn GetInfo(std::info::Pack* p, f32* n) -> f32 {
   std::io::printf("argc = %d\n", argc);
-  return 0;
+  return *n + 1;
 }

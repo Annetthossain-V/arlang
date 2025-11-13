@@ -3,7 +3,7 @@
 #include "lexical_analyzer.hxx"
 #include <stdexcept>
 
-static int pass = 0;
+int pass = 0;
 
 void lexer::TokenImportF( std::string& token, std::vector<lexer::OPCode>& expect, lexer::LexerToken& ltoken ) {
   if (token == "import" && (!expect.empty() || pass != 0))
@@ -41,7 +41,6 @@ void lexer::TokenImportF( std::string& token, std::vector<lexer::OPCode>& expect
   throw std::runtime_error(std::format("Unexpect End! token '{}'\n line: {}", token, ltoken.line));
 }
 
-// TODO: add sub-module support
 void lexer::TokenModuleF( std::string& token, std::vector<lexer::OPCode>& expect, lexer::LexerToken& ltoken ) {
   if (token == "module" && (!expect.empty() || pass != 0))
     throw std::runtime_error(std::format("Unexpected Token '{}'\n line: {}", token, ltoken.line));
@@ -67,7 +66,7 @@ void lexer::TokenModuleF( std::string& token, std::vector<lexer::OPCode>& expect
     expect.clear();
     expect.push_back(lexer::OPCode::Ident);
     ltoken.opcode = lexer::OPCode::Sym;
-    ltoken.subopcode = lexer::SubOPCode::Sym_Double_SemiColon;
+    ltoken.subopcode = lexer::SubOPCode::Sym_Double_Colon;
 
     pass++;
     return;
@@ -77,7 +76,7 @@ void lexer::TokenModuleF( std::string& token, std::vector<lexer::OPCode>& expect
     ltoken.opcode = lexer::OPCode::Sym;
     ltoken.subopcode = lexer::SubOPCode::Sym_SemiColon;
 
-    if (pass <= 2)
+    if (pass < 2)
       throw std::runtime_error(std::format("Unable to tokenize '{}' for 'import'", token));
 
     pass = 0;

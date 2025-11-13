@@ -13,7 +13,7 @@ lexer::TokenWord lexer::token_mode = lexer::TokenWord::TokenNone;
 std::vector<lexer::LexerToken> lexer::lexical_analyze(std::ifstream &file) {
   log_stdout::info("• `Lexical analysis`");
 
-  const std::string delims = " [],{}.()<>/+-*&$!:;=%";
+  const std::string delims = " [],{}.()<>/+-*&$!:;=%|";
   std::string line = "";
   std::vector<lexer::LexerToken> result;
 
@@ -68,6 +68,8 @@ void lexer::WordTokenizer(
     lexer::token_mode = lexer::TokenWord::TokenImport;
   else if (token == "module")
     lexer::token_mode = lexer::TokenWord::TokenModule;
+  else if (token == "fn")
+    lexer::token_mode = lexer::TokenWord::TokenFn;
 
 match_token_word:
   switch (lexer::token_mode) {
@@ -77,65 +79,13 @@ match_token_word:
     case lexer::TokenWord::TokenModule:
       lexer::TokenModuleF(token, expect, ltoken);
       break;
+    case lexer::TokenWord::TokenFn:
+      lexer::TokenFnF(token, expect, ltoken);
+      break;
     case lexer::TokenWord::TokenNone:
       throw std::runtime_error(std::format("Unknown Token '{}'\n line: {}", token, ltoken.line));
       break;
   }
 
   return;
-}
-
-bool lexer::token_grouper(size_t& i, std::string& token, std::string& token_next) {
-  if (token.size() != 1 || token_next.size() != 1)
-    return false;
-
-  char c = token[0];
-  char nc = token_next[0];
-
-  if (c == ':' && nc == ':') {
-    token_next = "::";
-    return true;
-  }
-  else if (c == '/' && nc == '/') {
-    token_next = "//";
-    return true;
-  }
-  else if (c == '*' && nc == '*') {
-    token_next = "**";
-    return true;
-  }
-  else if (c == '=' && nc == '=') {
-    token_next = "==";
-    return true;
-  }
-  else if (c == '>' && nc == '=') {
-    token_next = ">=";
-    return true;
-  }
-  else if (c == '<' && nc == '=') {
-    token_next = "<=";
-    return true;
-  }
-  else if (c == '=' && nc == '+') {
-    token_next = "=+";
-    return true;
-  }
-  else if (c == '=' && nc == '-') {
-    token_next = "=-";
-    return true;
-  }
-  else if (c == '=' && nc == '*') {
-    token_next = "=*";
-    return true;
-  }
-  else if (c == '=' && nc == '/') {
-    token_next = "=/";
-    return true;
-  }
-  else if (c == '=' && nc == '%') {
-    token_next = "=%";
-    return true;
-  }
-
-  return false;
 }

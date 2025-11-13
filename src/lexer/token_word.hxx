@@ -2,11 +2,16 @@
 #include "lexical_analyzer.hxx"
 #include "lexical_def.hxx"
 
+extern int pass;
+
 namespace lexer {
 
 enum TokenWord {
   TokenImport,
   TokenModule,
+  TokenFn,
+  TokenFnArgs,
+  TokenExprVal,
   TokenNone,
 };
 
@@ -37,6 +42,28 @@ void TokenFnF(
   std::string& token,
   std::vector<lexer::OPCode>& expect,
   lexer::LexerToken& ltoken
+);
+
+void TokenFunArgsF(
+  std::string& token,
+  std::vector<lexer::OPCode>& expect,
+  lexer::LexerToken& ltoken
+);
+
+void TokenExprValF(
+  std::string& token,
+  std::vector<lexer::OPCode>& expect,
+  lexer::LexerToken& ltoken
+);
+
+void TokenRetTypeExpr(
+  std::string& token,
+  std::vector<lexer::OPCode>& expect,
+  lexer::LexerToken& ltoken
+);
+
+void TokenExprGenBasicF(
+  void
 );
 
 }
