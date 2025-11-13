@@ -33,5 +33,10 @@ void TokenModuleF(
   lexer::LexerToken& ltoken
 );
 
+void TokenFnF(
+  std::string& token,
+  std::vector<lexer::OPCode>& expect,
+  lexer::LexerToken& ltoken
+);
 
 }

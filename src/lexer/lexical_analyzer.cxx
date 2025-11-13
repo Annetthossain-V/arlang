@@ -8,13 +8,12 @@
 #include <string>
 #include <fstream>
 
-
 lexer::TokenWord lexer::token_mode = lexer::TokenWord::TokenNone;
 
 std::vector<lexer::LexerToken> lexer::lexical_analyze(std::ifstream &file) {
   log_stdout::info("• `Lexical analysis`");
 
-  const std::string delims = " [],{}.()<>/+-*&$!:;=";
+  const std::string delims = " [],{}.()<>/+-*&$!:;=%";
   std::string line = "";
   std::vector<lexer::LexerToken> result;
 
@@ -28,7 +27,8 @@ std::vector<lexer::LexerToken> lexer::lexical_analyze(std::ifstream &file) {
         '\\'
     );
 
-    for (size_t i = 0; i < tokens.size(); i++) {
+    tokens.push_back("");
+    for (size_t i = 0; i < tokens.size() - 1; i++) {
       std::string& token = tokens[i];
       if (token == "//")
         break;
@@ -37,12 +37,12 @@ std::vector<lexer::LexerToken> lexer::lexical_analyze(std::ifstream &file) {
       ltoken.word = token;
       ltoken.line = line;
 
-      std::string next_token = "";
+      std::string token_next = "";
       if (i + 1 < token.size())
-        next_token = tokens[i + 1];
+        token_next = tokens[i + 1];
 
-      lexer::token_grouper(i, token, next_token);
-      lexer::WordTokenizer(tokens, token, expect, ltoken, next_token, i);
+      if (lexer::token_grouper(i, token, tokens[i + 1])) continue;
+      lexer::WordTokenizer(tokens, token, expect, ltoken, token_next, i);
 
       result.push_back(ltoken);
     }
@@ -78,19 +78,64 @@ match_token_word:
       lexer::TokenModuleF(token, expect, ltoken);
       break;
     case lexer::TokenWord::TokenNone:
-      throw std::runtime_error(std::format("Unknown Token '{}'", token));
+      throw std::runtime_error(std::format("Unknown Token '{}'\n line: {}", token, ltoken.line));
       break;
   }
 
   return;
 }
 
-void lexer::token_grouper(size_t& i, std::string& token, std::string& token_next) {
+bool lexer::token_grouper(size_t& i, std::string& token, std::string& token_next) {
   if (token.size() != 1 || token_next.size() != 1)
-    return;
+    return false;
 
-  char tokenc = token[0];
-  char token_nextc = token_next[0];
+  char c = token[0];
+  char nc = token_next[0];
 
-  return;
+  if (c == ':' && nc == ':') {
+    token_next = "::";
+    return true;
+  }
+  else if (c == '/' && nc == '/') {
+    token_next = "//";
+    return true;
+  }
+  else if (c == '*' && nc == '*') {
+    token_next = "**";
+    return true;
+  }
+  else if (c == '=' && nc == '=') {
+    token_next = "==";
+    return true;
+  }
+  else if (c == '>' && nc == '=') {
+    token_next = ">=";
+    return true;
+  }
+  else if (c == '<' && nc == '=') {
+    token_next = "<=";
+    return true;
+  }
+  else if (c == '=' && nc == '+') {
+    token_next = "=+";
+    return true;
+  }
+  else if (c == '=' && nc == '-') {
+    token_next = "=-";
+    return true;
+  }
+  else if (c == '=' && nc == '*') {
+    token_next = "=*";
+    return true;
+  }
+  else if (c == '=' && nc == '/') {
+    token_next = "=/";
+    return true;
+  }
+  else if (c == '=' && nc == '%') {
+    token_next = "=%";
+    return true;
+  }
+
+  return false;
 }

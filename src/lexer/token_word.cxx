@@ -1,12 +1,13 @@
 #include "token_word.hxx"
 #include "lexical_def.hxx"
+#include "lexical_analyzer.hxx"
 #include <stdexcept>
 
 static int pass = 0;
 
 void lexer::TokenImportF( std::string& token, std::vector<lexer::OPCode>& expect, lexer::LexerToken& ltoken ) {
   if (token == "import" && (!expect.empty() || pass != 0))
-    throw std::runtime_error(std::format("Unexpected Token '{}'", token));
+    throw std::runtime_error(std::format("Unexpected Token '{}'\n line: {}", token, ltoken.line));
 
   if (token == "import" && expect.empty()) {
     expect.push_back(lexer::OPCode::ValString);
@@ -16,7 +17,7 @@ void lexer::TokenImportF( std::string& token, std::vector<lexer::OPCode>& expect
     pass++;
     return;
   }
-  else if (!expect.empty() && expect[expect.size() - 1] == lexer::OPCode::ValString) {
+  else if (!expect.empty() && expect_contains(expect, lexer::OPCode::ValString)) {
     expect.clear();
     expect.push_back(lexer::OPCode::Sym);
     ltoken.opcode = lexer::OPCode::ValString;
@@ -25,7 +26,7 @@ void lexer::TokenImportF( std::string& token, std::vector<lexer::OPCode>& expect
     pass++;
     return;
   }
-  else if (!expect.empty() && expect[expect.size() - 1] == lexer::OPCode::Sym && token == ";") {
+  else if (!expect.empty() && expect_contains(expect, lexer::OPCode::Sym) && token == ";") {
     expect.clear();
     ltoken.opcode = lexer::OPCode::Sym;
     ltoken.subopcode = lexer::SubOPCode::Sym_SemiColon;
@@ -37,12 +38,13 @@ void lexer::TokenImportF( std::string& token, std::vector<lexer::OPCode>& expect
     lexer::token_mode = lexer::TokenWord::TokenNone;
     return;
   }
+  throw std::runtime_error(std::format("Unexpect End! token '{}'\n line: {}", token, ltoken.line));
 }
 
 // TODO: add sub-module support
 void lexer::TokenModuleF( std::string& token, std::vector<lexer::OPCode>& expect, lexer::LexerToken& ltoken ) {
   if (token == "module" && (!expect.empty() || pass != 0))
-    throw std::runtime_error(std::format("Unexpected Token '{}'", token));
+    throw std::runtime_error(std::format("Unexpected Token '{}'\n line: {}", token, ltoken.line));
 
   if (token == "module" && expect.empty()) {
     expect.push_back(lexer::OPCode::Ident);
@@ -52,7 +54,7 @@ void lexer::TokenModuleF( std::string& token, std::vector<lexer::OPCode>& expect
     pass++;
     return;
   }
-  else if (!expect.empty() && expect[expect.size() - 1] == lexer::OPCode::Ident) {
+  else if (!expect.empty() && expect_contains(expect, lexer::OPCode::Ident)) {
     expect.clear();
     expect.push_back(lexer::OPCode::Sym);
     ltoken.opcode = lexer::OPCode::Ident;
@@ -61,16 +63,26 @@ void lexer::TokenModuleF( std::string& token, std::vector<lexer::OPCode>& expect
     pass++;
     return;
   }
-  else if (!expect.empty() && expect[expect.size() - 1] == lexer::OPCode::Sym && token == ";") {
+  else if (!expect.empty() && expect_contains(expect, lexer::OPCode::Sym) && token == "::") {
+    expect.clear();
+    expect.push_back(lexer::OPCode::Ident);
+    ltoken.opcode = lexer::OPCode::Sym;
+    ltoken.subopcode = lexer::SubOPCode::Sym_Double_SemiColon;
+
+    pass++;
+    return;
+  }
+  else if (!expect.empty() && expect_contains(expect, lexer::OPCode::Sym) && token == ";") {
     expect.clear();
     ltoken.opcode = lexer::OPCode::Sym;
     ltoken.subopcode = lexer::SubOPCode::Sym_SemiColon;
 
-    if (pass != 2)
+    if (pass <= 2)
       throw std::runtime_error(std::format("Unable to tokenize '{}' for 'import'", token));
 
     pass = 0;
     lexer::token_mode = lexer::TokenWord::TokenNone;
     return;
   }
+  throw std::runtime_error(std::format("Unexpect End! token '{}'\n line: {}", token, ltoken.line));
 }

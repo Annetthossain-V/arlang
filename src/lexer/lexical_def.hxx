@@ -26,6 +26,7 @@ enum SubOPCode {
   OP_Equal,
 
   Sym_SemiColon,
+  Sym_Double_SemiColon,
 
   OPName,
   SubUnknownOp,
