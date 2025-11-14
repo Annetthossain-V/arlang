@@ -163,25 +163,83 @@ lexer::OPCode lexer::check_token(std::string& kw) {
   auto type = lexer::get_token_type(kw);
   switch (type) {
     case lexer::SubOPCode::KW_Import:
-      RT_KW;
     case lexer::SubOPCode::KW_Module:
-      RT_KW;
     case lexer::SubOPCode::KW_Extern:
-      RT_KW;
     case lexer::SubOPCode::KW_Fn:
-      RT_KW;
     case lexer::SubOPCode::KW_CChar:
-      RT_KW;
     case lexer::SubOPCode::KW_CUChar:
-      RT_KW;
     case lexer::SubOPCode::KW_CShort:
-      RT_KW;
     case lexer::SubOPCode::KW_CUShort:
-      RT_KW;
     case lexer::SubOPCode::KW_CInt:
-      RT_KW;
     case lexer::SubOPCode::KW_CUInt:
+    case lexer::SubOPCode::KW_CLong:
+    case lexer::SubOPCode::KW_CULong:
+    case lexer::SubOPCode::KW_CLongLong:
+    case lexer::SubOPCode::KW_CULongLong:
+    case lexer::SubOPCode::KW_CFloat:
+    case lexer::SubOPCode::KW_CDouble:
+    case lexer::SubOPCode::KW_U8:
+    case lexer::SubOPCode::KW_I8:
+    case lexer::SubOPCode::KW_U16:
+    case lexer::SubOPCode::KW_I16:
+    case lexer::SubOPCode::KW_U32:
+    case lexer::SubOPCode::KW_I32:
+    case lexer::SubOPCode::KW_U64:
+    case lexer::SubOPCode::KW_I64:
+    case lexer::SubOPCode::KW_F32:
+    case lexer::SubOPCode::KW_F64:
+    case lexer::SubOPCode::KW_Size:
+    case lexer::SubOPCode::KW_USize:
+    case lexer::SubOPCode::KW_Void:
       RT_KW;
+
+    case lexer::SubOPCode::Sym_SemiColon:
+    case lexer::SubOPCode::Sym_Square_Brackect_Open:
+    case lexer::SubOPCode::Sym_Square_Brackect_Close:
+    case lexer::SubOPCode::Sym_Curly_Braces_Open:
+    case lexer::SubOPCode::Sym_Curly_Braces_Close:
+    case lexer::SubOPCode::Sym_Comma:
+    case lexer::SubOPCode::Sym_Dot:
+    case lexer::SubOPCode::Sym_Bracket_Open:
+    case lexer::SubOPCode::Sym_Bracket_Close:
+    case lexer::SubOPCode::Sym_Greater_Sign:
+    case lexer::SubOPCode::Sym_Less_Sign:
+    case lexer::SubOPCode::Sym_Slash:
+    case lexer::SubOPCode::Sym_Plus:
+    case lexer::SubOPCode::Sym_Minus:
+    case lexer::SubOPCode::Sym_Asterisk:
+    case lexer::SubOPCode::Sym_And:
+    case lexer::SubOPCode::Sym_Dollar:
+    case lexer::SubOPCode::Sym_Exclamation:
+    case lexer::SubOPCode::Sym_Colon:
+    case lexer::SubOPCode::Sym_Equal:
+    case lexer::SubOPCode::Sym_Percentage:
+    case lexer::SubOPCode::Sym_Or:
+    case lexer::SubOPCode::Sym_Double_Colon:
+    case lexer::SubOPCode::Sym_Double_Asterisk:
+    case lexer::SubOPCode::Sym_Double_Equal:
+    case lexer::SubOPCode::Sym_Greater_Equal:
+    case lexer::SubOPCode::Sym_Less_Equal:
+    case lexer::SubOPCode::Sym_Plus_Equal:
+    case lexer::SubOPCode::Sym_Minus_Equal:
+    case lexer::SubOPCode::Sym_Asterisk_Equal:
+    case lexer::SubOPCode::Sym_Slash_Equal:
+    case lexer::SubOPCode::Sym_Percentage_Equal:
+    case lexer::SubOPCode::Sym_Shift_Left:
+    case lexer::SubOPCode::Sym_Shift_Right:
+    case lexer::SubOPCode::Sym_Arrow_Left:
+    case lexer::SubOPCode::Sym_Arrow_Right:
+    case lexer::SubOPCode::Sym_And_And:
+    case lexer::SubOPCode::Sym_Or_Or:
+    case lexer::SubOPCode::Sym_Plus_Plus:
+    case lexer::SubOPCode::Sym_Minus_Minus:
+    case lexer::SubOPCode::Sym_Not_Equal:
+      RT_Sym;
+
+    case lexer::SubOPCode::SubUnknownOp:
+      if (lexer::is_int(kw)) RT_VInt;
+      else if (lexer::is_float(kw)) RT_VFloat;
+      else if (lexer::is_str(kw)) RT_VStr;
 
     default:
       break;

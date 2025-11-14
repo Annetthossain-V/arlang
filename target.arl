@@ -1,5 +1,5 @@
 module main::arc;
-import "./file.arl";
+import file;
 
 fn main(int argc, char** argv) -> int {
   

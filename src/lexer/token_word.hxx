@@ -11,6 +11,7 @@ enum TokenWord {
   TokenModule,
   TokenFn,
   TokenFnArgs,
+  TokenRetExpr,
   TokenExpr,
   TokenNone,
 };

@@ -65,6 +65,17 @@ void lexer::WordTokenizer(
   if (lexer::token_mode != lexer::TokenWord::TokenNone)
     goto match_token_word;
 
+  if (lexer::get_token_type(token) == lexer::SubOPCode::Sym_Curly_Braces_Open)
+    goto segment_start;
+  else if (lexer::get_token_type(token) == lexer::SubOPCode::Sym_Curly_Braces_Close)
+    goto segment_end;
+  else if (lexer::get_token_type(token) == lexer::SubOPCode::Sym_SemiColon)
+    goto segment_semi_colon;
+
+  // temporary fix
+  if (lexer::get_token_type(token) == lexer::SubOPCode::Sym_Arrow_Right)
+    lexer::token_mode = lexer::TokenWord::TokenRetExpr;
+
   if (lexer::get_token_type(token) == lexer::SubOPCode::KW_Import)
     lexer::token_mode = lexer::TokenWord::TokenImport;
   else if (lexer::get_token_type(token) == lexer::SubOPCode::KW_Module)
@@ -86,8 +97,11 @@ match_token_word:
     case lexer::TokenWord::TokenFnArgs:
       lexer::TokenFunArgsF(token, expect, ltoken, next_token);
       break;
-    case lexer::TokenExpr:
+    case lexer::TokenWord::TokenExpr:
       lexer::TokenExprF(token, expect, ltoken);
+      break;
+    case lexer::TokenWord::TokenRetExpr:
+      lexer::TokenRetTypeExpr(token, expect, ltoken);
       break;
     case lexer::TokenWord::TokenNone:
       throw std::runtime_error(std::format("Unknown Token '{}'\n line: {}", token, ltoken.line));
@@ -95,4 +109,20 @@ match_token_word:
   }
 
   return;
+
+segment_start:
+  ltoken.opcode = lexer::OPCode::Sym;
+  ltoken.subopcode = lexer::SubOPCode::Sym_Curly_Braces_Open;
+  return;
+
+segment_end:
+  ltoken.opcode = lexer::OPCode::Sym;
+  ltoken.subopcode = lexer::SubOPCode::Sym_Curly_Braces_Close;
+  return;
+
+segment_semi_colon:
+  ltoken.opcode = lexer::OPCode::Sym;
+  ltoken.subopcode = lexer::SubOPCode::Sym_SemiColon;
+  return;
+
 }

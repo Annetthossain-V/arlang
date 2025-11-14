@@ -94,7 +94,10 @@ void lexer::TokenFunArgsF(std::string &token, std::vector<lexer::OPCode> &expect
     ltoken.opcode = lexer::OPCode::Sym;
     ltoken.subopcode = lexer::SubOPCode::Sym_Bracket_Close;
 
-    token_mode = lexer::TokenWord::TokenNone;
+    // ntoken is empty for some reason!
+    if (lexer::get_token_type(ntoken) == lexer::SubOPCode::Sym_Arrow_Right) 
+      token_mode = lexer::TokenWord::TokenRetExpr;
+    else token_mode = lexer::TokenWord::TokenNone;
     pass = 0;
     return;
   }
@@ -103,6 +106,26 @@ void lexer::TokenFunArgsF(std::string &token, std::vector<lexer::OPCode> &expect
 }
 
 void lexer::TokenRetTypeExpr(std::string &token, std::vector<lexer::OPCode> &expect, lexer::LexerToken &ltoken) {
+  if (expect.empty() && lexer::get_token_type(token) == lexer::SubOPCode::Sym_Arrow_Right) {
+    expect.push_back(lexer::OPCode::Ident);
+    expect.push_back(lexer::OPCode::KW);
+
+    ltoken.opcode = lexer::OPCode::Sym;
+    ltoken.subopcode = lexer::SubOPCode::Sym_Arrow_Right;
+
+    pass++;
+    return;
+  }
+  else if (!expect.empty() && (expect_contains(expect, lexer::OPCode::Ident) || expect_contains(expect, lexer::OPCode::KW) && (lexer::check_token(token) == lexer::OPCode::KW || lexer::check_token(token) == lexer::OPCode::UnknownOP))) {
+    expect.clear();
+
+    ltoken.opcode = lexer::check_token(token);
+    ltoken.subopcode = lexer::get_token_type(token);
+
+    token_mode = lexer::TokenWord::TokenNone;
+    pass = 0;
+    return;
+  }
 
   throw std::runtime_error(std::format("Unexpect End! token '{}'\n line: {}", token, ltoken.line));
 }
