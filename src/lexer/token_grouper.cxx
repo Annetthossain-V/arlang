@@ -1,6 +1,9 @@
 #include "lexical_analyzer.hxx"
 
 bool lexer::token_grouper(size_t& i, std::string& token, std::string& token_next) {
+  if (token.empty() || token_next.empty())
+    return false;
+
   if (token.size() != 1 || token_next.size() != 1)
     return false;
 

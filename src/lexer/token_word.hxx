@@ -11,7 +11,7 @@ enum TokenWord {
   TokenModule,
   TokenFn,
   TokenFnArgs,
-  TokenExprVal,
+  TokenExpr,
   TokenNone,
 };
 
@@ -50,7 +50,7 @@ void TokenFunArgsF(
   lexer::LexerToken& ltoken
 );
 
-void TokenExprValF(
+void TokenExprF(
   std::string& token,
   std::vector<lexer::OPCode>& expect,
   lexer::LexerToken& ltoken
@@ -62,8 +62,10 @@ void TokenRetTypeExpr(
   lexer::LexerToken& ltoken
 );
 
-void TokenExprGenBasicF(
-  void
+void TokenFnCallF(
+  std::string& token,
+  std::vector<lexer::OPCode>& expect,
+  lexer::LexerToken& ltoken
 );
 
 }

@@ -3,6 +3,7 @@
 #include "spliter.hxx"
 #include "../core/log.h"
 #include "token_word.hxx"
+#include "token_check.hxx"
 #include <stdexcept>
 #include <vector>
 #include <string>
@@ -64,11 +65,11 @@ void lexer::WordTokenizer(
   if (lexer::token_mode != lexer::TokenWord::TokenNone)
     goto match_token_word;
 
-  if (token == "import")
+  if (lexer::get_token_type(token) == lexer::SubOPCode::KW_Import)
     lexer::token_mode = lexer::TokenWord::TokenImport;
-  else if (token == "module")
+  else if (lexer::get_token_type(token) == lexer::SubOPCode::KW_Module)
     lexer::token_mode = lexer::TokenWord::TokenModule;
-  else if (token == "fn")
+  else if (lexer::get_token_type(token) == lexer::SubOPCode::KW_Fn)
     lexer::token_mode = lexer::TokenWord::TokenFn;
 
 match_token_word:
@@ -81,6 +82,12 @@ match_token_word:
       break;
     case lexer::TokenWord::TokenFn:
       lexer::TokenFnF(token, expect, ltoken);
+      break;
+    case lexer::TokenWord::TokenFnArgs:
+      lexer::TokenFunArgsF(token, expect, ltoken);
+      break;
+    case lexer::TokenExpr:
+      lexer::TokenExprF(token, expect, ltoken);
       break;
     case lexer::TokenWord::TokenNone:
       throw std::runtime_error(std::format("Unknown Token '{}'\n line: {}", token, ltoken.line));
