@@ -146,10 +146,36 @@ lexer::SubOPCode lexer::get_token_type(std::string& kw) {
   return lexer::SubOPCode::SubUnknownOp;
 }
 
+#define RT_KW return lexer::OPCode::KW
+#define RT_Ident return lexer::OPCode::Ident
+#define RT_VInt return lexer::OPCode::VInt
+#define RT_VFloat return lexer::OPCode::VFloat
+#define RT_VStr return lexer::OPCode::VString
+#define RT_Sym return lexer::OPCode::Sym
+#define RT_Asm return lexer::OPCode::Asm
+
 lexer::OPCode lexer::check_token(std::string& kw) {
   auto type = lexer::get_token_type(kw);
   switch (type) {
+    case lexer::SubOPCode::KW_Import:
+      RT_KW;
+    case lexer::SubOPCode::KW_Module:
+      RT_KW;
+    case lexer::SubOPCode::KW_Extern:
+      RT_KW;
+    case lexer::SubOPCode::KW_Fn:
+      RT_KW;
+    case lexer::SubOPCode::KW_CChar:
+      RT_KW;
+    case lexer::SubOPCode::KW_CUChar:
+      RT_KW;
+    case lexer::SubOPCode::KW_CShort:
+      RT_KW;
+    case lexer::SubOPCode::KW_CUShort:
+      RT_KW;
 
+    default:
+      break;
   }
   return lexer::OPCode::UnknownOP;
 }

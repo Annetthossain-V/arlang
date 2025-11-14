@@ -5,10 +5,10 @@ namespace lexer {
 enum OPCode {
   KW,
   Ident,
-  Op,
-  ValInt,
-  ValFloat,
-  ValString,
+  // Op,
+  VInt,
+  VFloat,
+  VString,
   Sym,
   Asm,
 
