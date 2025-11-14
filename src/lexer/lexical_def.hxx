@@ -89,6 +89,7 @@ enum SubOPCode {
   Sym_Or_Or,
   Sym_Plus_Plus,
   Sym_Minus_Minus,
+  Sym_Not_Equal,
 
   OPName,
   SubUnknownOp,

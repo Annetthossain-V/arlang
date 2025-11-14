@@ -29,7 +29,7 @@ void lexer::TokenFnF(std::string &token, std::vector<lexer::OPCode> &expect, lex
   throw std::runtime_error(std::format("Unexpect End! token '{}'\n line: {}", token, ltoken.line));
 }
 
-void lexer::TokenFunArgsF(std::string &token, std::vector<lexer::OPCode> &expect, lexer::LexerToken &ltoken) {
+void lexer::TokenFunArgsF(std::string &token, std::vector<lexer::OPCode> &expect, lexer::LexerToken &ltoken, std::string& ntoken) {
   if (!expect.empty() && expect_contains(expect, lexer::OPCode::Sym) && lexer::get_token_type(token) == lexer::SubOPCode::Sym_Bracket_Open) {
     expect.clear();
     expect.push_back(lexer::OPCode::KW);
@@ -43,14 +43,59 @@ void lexer::TokenFunArgsF(std::string &token, std::vector<lexer::OPCode> &expect
   }
 
   else if (!expect.empty() && expect_contains(expect, lexer::OPCode::KW) && lexer::check_token(token) == lexer::OPCode::KW) {
+    expect.clear();
+    expect.push_back(lexer::OPCode::Sym);
+    expect.push_back(lexer::OPCode::Ident);
+
+    ltoken.opcode = lexer::OPCode::KW;
+    ltoken.subopcode = lexer::get_token_type(token);
 
     pass++;
     return;
   }
 
   else if (!expect.empty() && expect_contains(expect, lexer::OPCode::Ident) && lexer::check_token(token) == lexer::OPCode::UnknownOP) {
+    expect.clear();
+    expect.push_back(lexer::OPCode::Sym);
+
+    ltoken.opcode = lexer::OPCode::Ident;
+    ltoken.subopcode = lexer::SubOPCode::OPName;
 
     pass++;
+    return;
+  }
+
+  else if (!expect.empty() && expect_contains(expect, lexer::OPCode::Sym) && (lexer::get_token_type(token) == lexer::SubOPCode::Sym_Comma || lexer::get_token_type(token) == lexer::SubOPCode::Sym_Double_Colon)) {
+    expect.clear();
+    expect.push_back(lexer::OPCode::Ident);
+    expect.push_back(lexer::OPCode::KW);
+
+    ltoken.opcode = lexer::OPCode::Sym;
+    ltoken.subopcode = lexer::get_token_type(token);
+
+    pass++;
+    return;
+  }
+
+  else if (!expect.empty() && expect_contains(expect, lexer::OPCode::Sym) && (lexer::get_token_type(token) == lexer::SubOPCode::Sym_Asterisk || lexer::get_token_type(token) == lexer::SubOPCode::Sym_Double_Asterisk)) {
+    expect.clear();
+    expect.push_back(lexer::OPCode::Ident);
+
+    ltoken.opcode = lexer::OPCode::Sym;
+    ltoken.subopcode = lexer::get_token_type(token);
+
+    pass++;
+    return;
+  }
+
+  else if (!expect.empty() && expect_contains(expect, lexer::OPCode::Sym) && lexer::get_token_type(token) == lexer::SubOPCode::Sym_Bracket_Close) {
+    expect.clear();
+
+    ltoken.opcode = lexer::OPCode::Sym;
+    ltoken.subopcode = lexer::SubOPCode::Sym_Bracket_Close;
+
+    token_mode = lexer::TokenWord::TokenNone;
+    pass = 0;
     return;
   }
 
@@ -63,5 +108,5 @@ void lexer::TokenRetTypeExpr(std::string &token, std::vector<lexer::OPCode> &exp
 }
 
 void lexer::TokenExprF(std::string &token, std::vector<lexer::OPCode> &expect, lexer::LexerToken &ltoken) {
-  return;
+  throw std::runtime_error(std::format("Unexpect End! token '{}'\n line: {}", token, ltoken.line));
 }

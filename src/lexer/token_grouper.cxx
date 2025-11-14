@@ -86,6 +86,10 @@ bool lexer::token_grouper(size_t& i, std::string& token, std::string& token_next
     token_next = "--";
     return true;
   }
+  else if (c == '!' && nc == '=') {
+    token_next = "!=";
+    return true;
+  }
 
   return false;
 }

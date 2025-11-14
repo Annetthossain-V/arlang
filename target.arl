@@ -1,7 +1,7 @@
-module main;
-import std;
+module main::arc;
+import "./file.arl";
 
-fn GetInfo(std::info::Pack* p, f32* n) -> f32 {
-  std::io::printf("argc = %d\n", argc);
-  return *n + 1;
+fn main(int argc, char** argv) -> int {
+  
+  return 0;
 }

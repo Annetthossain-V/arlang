@@ -144,6 +144,8 @@ lexer::SubOPCode lexer::get_token_type(std::string& kw) {
     return lexer::SubOPCode::Sym_Plus_Plus;
   else if (kw == "--")
     return lexer::SubOPCode::Sym_Minus_Minus;
+  else if (kw == "!=")
+    return lexer::SubOPCode::Sym_Not_Equal;
 
   return lexer::SubOPCode::SubUnknownOp;
 }
@@ -156,6 +158,7 @@ lexer::SubOPCode lexer::get_token_type(std::string& kw) {
 #define RT_Sym return lexer::OPCode::Sym
 #define RT_Asm return lexer::OPCode::Asm
 
+// need to finish this to check other stuff
 lexer::OPCode lexer::check_token(std::string& kw) {
   auto type = lexer::get_token_type(kw);
   switch (type) {
@@ -174,6 +177,10 @@ lexer::OPCode lexer::check_token(std::string& kw) {
     case lexer::SubOPCode::KW_CShort:
       RT_KW;
     case lexer::SubOPCode::KW_CUShort:
+      RT_KW;
+    case lexer::SubOPCode::KW_CInt:
+      RT_KW;
+    case lexer::SubOPCode::KW_CUInt:
       RT_KW;
 
     default:

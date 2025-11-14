@@ -84,7 +84,7 @@ match_token_word:
       lexer::TokenFnF(token, expect, ltoken);
       break;
     case lexer::TokenWord::TokenFnArgs:
-      lexer::TokenFunArgsF(token, expect, ltoken);
+      lexer::TokenFunArgsF(token, expect, ltoken, next_token);
       break;
     case lexer::TokenExpr:
       lexer::TokenExprF(token, expect, ltoken);

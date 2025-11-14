@@ -47,7 +47,8 @@ void TokenFnF(
 void TokenFunArgsF(
   std::string& token,
   std::vector<lexer::OPCode>& expect,
-  lexer::LexerToken& ltoken
+  lexer::LexerToken& ltoken,
+  std::string& ntoken
 );
 
 void TokenExprF(
