@@ -46,6 +46,7 @@ enum SubOPCode {
   KW_F64,
   KW_Size,
   KW_USize,
+  KW_Void,
 
   Sym_SemiColon,
   Sym_Square_Brackect_Open,

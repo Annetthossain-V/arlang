@@ -11,17 +11,17 @@ void lexer::TokenImportF( std::string& token, std::vector<lexer::OPCode>& expect
     throw std::runtime_error(std::format("Unexpected Token '{}'\n line: {}", token, ltoken.line));
 
   if (lexer::get_token_type(token) == lexer::SubOPCode::KW_Import && expect.empty()) {
-    expect.push_back(lexer::OPCode::ValString);
+    expect.push_back(lexer::OPCode::VString);
     ltoken.opcode = lexer::OPCode::KW;
     ltoken.subopcode = lexer::SubOPCode::KW_Import;
 
     pass++;
     return;
   }
-  else if (!expect.empty() && expect_contains(expect, lexer::OPCode::ValString)) {
+  else if (!expect.empty() && expect_contains(expect, lexer::OPCode::VString)) {
     expect.clear();
     expect.push_back(lexer::OPCode::Sym);
-    ltoken.opcode = lexer::OPCode::ValString;
+    ltoken.opcode = lexer::OPCode::VString;
     ltoken.subopcode = lexer::SubOPCode::OPName;
 
     pass++;

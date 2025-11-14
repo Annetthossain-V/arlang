@@ -60,6 +60,8 @@ lexer::SubOPCode lexer::get_token_type(std::string& kw) {
     return lexer::SubOPCode::KW_Size;
   else if (kw == "usize")
     return lexer::SubOPCode::KW_USize;
+  else if (kw == "void")
+    return lexer::SubOPCode::KW_Void;
 
   else if (kw == ";")
     return lexer::SubOPCode::Sym_SemiColon;

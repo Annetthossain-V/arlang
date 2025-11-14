@@ -31,6 +31,26 @@ void lexer::TokenFnF(std::string &token, std::vector<lexer::OPCode> &expect, lex
 
 void lexer::TokenFunArgsF(std::string &token, std::vector<lexer::OPCode> &expect, lexer::LexerToken &ltoken) {
   if (!expect.empty() && expect_contains(expect, lexer::OPCode::Sym) && lexer::get_token_type(token) == lexer::SubOPCode::Sym_Bracket_Open) {
+    expect.clear();
+    expect.push_back(lexer::OPCode::KW);
+    expect.push_back(lexer::OPCode::Ident);
+
+    ltoken.opcode = lexer::OPCode::Sym;
+    ltoken.subopcode = lexer::SubOPCode::Sym_Bracket_Open;
+
+    pass++;
+    return;
+  }
+
+  else if (!expect.empty() && expect_contains(expect, lexer::OPCode::KW) && lexer::check_token(token) == lexer::OPCode::KW) {
+
+    pass++;
+    return;
+  }
+
+  else if (!expect.empty() && expect_contains(expect, lexer::OPCode::Ident) && lexer::check_token(token) == lexer::OPCode::UnknownOP) {
+
+    pass++;
     return;
   }
 
