@@ -53,6 +53,17 @@ void lexer::TokenFnF(std::string &token, std::vector<lexer::OPCode> &expect, lex
     return;
   }
 
+  else if (!expect.empty() && expect_contains(expect, lexer::OPCode::Sym) && lexer::get_token_type(token) == lexer::SubOPCode::Sym_Comma) {
+    expect.clear();
+    expect.push_back(lexer::OPCode::Ident);
+
+    ltoken.opcode = lexer::check_token(token);
+    ltoken.subopcode = lexer::get_token_type(token);
+
+    pass++;
+    return;
+  }
+
   else if (!expect.empty() && expect_contains(expect, lexer::OPCode::Sym) && lexer::get_token_type(token) == lexer::SubOPCode::Sym_Bracket_Open) {
     expect.clear();
     expect.push_back(lexer::OPCode::KW);
